@@ -29,6 +29,59 @@ def board_center(game):
     """
     return (game.height//2, game.width//2)
 
+def most_moves(game, player):
+    """ Basic heuristic equal to number of moves available to the player
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
+    Returns
+    -------
+    float
+        The heuristic value of the current game state to the specified player.
+    """
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    return float(len(game.get_legal_moves(player)))
+
+def more_moves(game, player):
+    """ Basic heuristic equal to the difference between the number of moves available to the player and the opponent
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
+    Returns
+    -------
+    float
+        The heuristic value of the current game state to the specified player.
+    """
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    opponent = game.get_opponent(player)
+    return float(len(game.get_legal_moves(player))-len(game.get_legal_moves(opponent)))
+
 def custom_score(game, player):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
@@ -51,15 +104,8 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-
-    """ Basic heuristic equal to number of moves available to the player """
-    if game.is_loser(player):
-        return float("-inf")
-
-    if game.is_winner(player):
-        return float("inf")
-
-    return float(len(game.get_legal_moves(player)))
+    # return most_moves(game, player)
+    return more_moves(game, player)
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
