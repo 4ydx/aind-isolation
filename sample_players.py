@@ -3,6 +3,7 @@ own agent and example heuristic functions.
 """
 
 from random import randint
+from game_agent import CustomPlayer
 
 
 def null_score(game, player):
@@ -241,9 +242,11 @@ if __name__ == "__main__":
     print(game.to_string())
 
     # players take turns moving on the board, so player1 should be next to move
+    print("Player1 is active")
     assert(player1 == game.active_player)
 
     # get a list of the legal moves available to the active player
+    print("Legal Moves")
     print(game.get_legal_moves())
 
     # get a successor of the current state by making a copy of the board and
