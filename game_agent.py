@@ -409,27 +409,34 @@ class CustomPlayer:
             else :
                 return (float("+inf"), (-1, -1))
 
+        current_move = (-1, -1)
+        current_score = 0
+        if maximizing_player:
+            current_score = float("-inf")
+        else:
+            current_score = float("+inf")
+
         if depth == 1:
             if maximizing_player:
-                scores = []
                 for m in legal_moves:
                     score = self.score(game.forecast_move(m), self)
                     if score >= beta:
                         return (score, m)
-                    scores.append((score,m))
-                return max(scores)
+                    if score > current_score:
+                        current_score = score
+                        current_move = m
+                return (current_score, current_move)
             else:
-                scores = []
                 for m in legal_moves:
                     score = self.score(game.forecast_move(m), self)
                     if score <= alpha:
                         return (score, m)
-                    scores.append((score,m))
-                return min(scores)
+                    if score < current_score:
+                        current_score = score
+                        current_move = m
+                return (current_score, current_move)
 
         # evaluate all branches and return the highest/lowest scoring tuple
-        # branches = [(game.forecast_move(m), m) for m in legal_moves]
-        scores = []
         for m in legal_moves:
             if maximizing_player:
                 branch = game.forecast_move(m)
@@ -438,7 +445,9 @@ class CustomPlayer:
                     return (score, m)
                 if score > alpha:
                     alpha = score
-                scores.append((score, m))
+                if score > current_score:
+                    current_score = score
+                    current_move = m
             else:
                 branch = game.forecast_move(m)
                 score, _ = self.alphabeta(branch, depth-1, alpha, beta, not maximizing_player)
@@ -446,9 +455,8 @@ class CustomPlayer:
                     return (score, m)
                 if score < beta:
                     beta = score
-                scores.append((score, m))
+                if score < current_score:
+                    current_score = score
+                    current_move = m
 
-        if maximizing_player:
-            return max(scores)
-        else:
-            return min(scores)
+        return (current_score, current_move)
