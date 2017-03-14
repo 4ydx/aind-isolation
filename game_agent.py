@@ -413,20 +413,16 @@ class CustomPlayer:
         if depth == 1:
             if maximizing_player:
                 scores = []
-                forecast_calls = 0
                 for m in legal_moves:
                     score = self.score(game.forecast_move(m), self)
-                    forecast_calls += 1
                     if score >= beta:
                         return (score, m)
                     scores.append((score,m))
                 return max(scores)
             else:
                 scores = []
-                forecast_calls = 0
                 for m in legal_moves:
                     score = self.score(game.forecast_move(m), self)
-                    forecast_calls += 1
                     if score <= alpha:
                         return (score, m)
                     scores.append((score,m))
@@ -452,6 +448,7 @@ class CustomPlayer:
                 if score < beta:
                     beta = score
                 scores.append((score, m))
+
         if maximizing_player:
             return max(scores)
         else:
