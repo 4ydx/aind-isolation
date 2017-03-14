@@ -58,12 +58,21 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    """ favor moves where the player can move the most
-    return float(len(game.get_legal_moves(player)))
-    """
-
     """ favor moves where the player has more moves than the opponent
     return float(len(game.get_legal_moves(player))-len(game.get_legal_moves(game.get_opponent(player))))
+    """
+
+    """ favor moves where the player attempts to steal the opponents moves
+    favored = float(0)
+    playerMoves = game.get_legal_moves(player)
+    opponentMoves = game.get_legal_moves(game.get_opponent(player))
+    for o in opponentMoves:
+        for p in playerMoves:
+            if o == p:
+                favored += 1
+            else:
+                favored -= 1
+    return favored
     """
 
     """ favor moves that position the player closer to the opponent
@@ -351,6 +360,9 @@ class CustomPlayer:
 
         # evaluate all branches and return the highest/lowest scoring tuple
         for m in legal_moves:
+            if current_move == (-1, -1):
+                current_move = m
+
             if maximizing_player:
                 branch = game.forecast_move(m)
                 score, _ = self.alphabeta(branch, depth-1, alpha, beta, not maximizing_player)
