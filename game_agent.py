@@ -58,12 +58,12 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    """ favor moves where the player can move the most """
+    """ favor moves where the player can move the most
     return float(len(game.get_legal_moves(player)))
-
-    """ favor moves where the player has more moves than the opponent
-    return float(len(game.get_legal_moves(player))-len(game.get_legal_moves(game.get_opponent(player))))
     """
+
+    """ favor moves where the player has more moves than the opponent """
+    return float(len(game.get_legal_moves(player))-len(game.get_legal_moves(game.get_opponent(player))))
 
     """ favor moves that position the player closer to the opponent
     playerAt = game.get_player_location(player)
