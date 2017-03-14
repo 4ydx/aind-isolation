@@ -166,9 +166,9 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
     # return most_moves(game, player)
-    # return more_moves(game, player)
+    return more_moves(game, player)
     # return position_distance(game, player)
-    return center_distance(game, player)
+    # return center_distance(game, player)
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function

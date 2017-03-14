@@ -1,0 +1,27 @@
+sudo apt-get install pdflatex && sudo apt-get install texlive
+
+Basically you create one .tex file - for example hello.tex - with the LaTeX language, 
+then run pdflatex hello.tex on that file and it will generate the PDF. The basics of the language can be found here: http://www.maths.tcd.ie/~dwilkins/LaTeXPrimer/
+
+Here is a barebones example .tex file:
+
+ \documentclass[a4paper,10pt]{article}
+
+ \begin{document}
+
+ {\footnotesize
+ YOUR TEXT HERE
+
+ YOUR TEXT HERE
+ }
+
+ \end{document}
+Optional extra formatting:
+
+To add images: https://www.sharelatex.com/learn/Inserting_Images
+
+For different font sizes: https://www.sharelatex.com/learn/Font_sizes,_families,_and_styles
+
+For different fonts: https://www.sharelatex.com/learn/Font_typefaces
+
+To change page size and margins when using pdflatex: \usepackage[pass,paperwidth=148mm,paperheight=210mm,margin=5mm]{geometry}

@@ -1,0 +1,12 @@
+Profiling
+
+Profiling will give you a much more detailed idea about what's going on. Here's the "instant example" from the official docs:
+
+import cProfile
+import re
+cProfile.run('re.compile("foo|bar")')
+
+	
+If using cProfile there is also an option to profile the whole script and save results to a file with 
+python -m cProfile -o results.prof myscript.py
+snakeviz results.prof
