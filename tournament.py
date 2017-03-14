@@ -78,11 +78,6 @@ def play_match(player1, player2):
     # play both games and tally the results
     for game in games:
         winner, _, termination = game.play(time_limit=TIME_LIMIT)
-        #winner, history, termination = game.play(time_limit=TIME_LIMIT)
-        #print("--")
-        #print(game.to_string())
-        #print("Move history:\n{!s}".format(history))
-        #print("==")
 
         if player1 == winner:
             num_wins[player1] += 1
@@ -176,7 +171,6 @@ def main():
         print("*************************")
 
         agents = random_agents + mm_agents + ab_agents + [agentUT]
-        # agents = random_agents + [agentUT]
         win_ratio = play_round(agents, NUM_MATCHES)
 
         print("\n\nResults:")

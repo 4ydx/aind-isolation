@@ -166,10 +166,10 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return most_moves(game, player)
+    # return most_moves(game, player)
     # return more_moves(game, player)
     # return position_distance(game, player)
-    # return center_distance(game, player)
+    return center_distance(game, player)
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
@@ -263,8 +263,8 @@ class CustomPlayer:
             else:
                 return (center[0]-1, center[1]-1) # just offset from the center
 
+        depth = 1
         move = (-1, -1)
-        # print("current position", game.get_player_location(self))
         try:
             # The search method call (alpha beta or minimax) should happen in
             # here in order to avoid timeout. The try/except block will
@@ -273,7 +273,7 @@ class CustomPlayer:
             if self.method == "minimax":
                 if self.iterative:
                     # consider tracking the score and the move to see if quiescence is reached
-                    depth = 1
+                    # depth = 1
                     while True:
                         _, move = self.minimax(game, depth)
                         depth = depth + 1
@@ -281,7 +281,7 @@ class CustomPlayer:
                     _, move = self.minimax(game, self.search_depth)
             else:
                 if self.iterative:
-                    depth = 1
+                    # depth = 1
                     while True:
                         _, move = self.alphabeta(game, depth)
                         depth = depth + 1
@@ -289,10 +289,9 @@ class CustomPlayer:
                     _, move = self.alphabeta(game, self.search_depth)
 
         except Timeout:
-            # print("timeout")
+            # print("depth", depth, self.method)
             pass
 
-        # print("chose move", move)
         return move
 
     def minimax(self, game, depth, maximizing_player=True):
@@ -416,33 +415,21 @@ class CustomPlayer:
                 scores = []
                 forecast_calls = 0
                 for m in legal_moves:
-                    #print("call forecast", m, "depth", depth)
                     score = self.score(game.forecast_move(m), self)
                     forecast_calls += 1
                     if score >= beta:
-                        #print("pruning beta", beta, "score", score, "after move", m)
-                        print("."*depth + "leaf", "forecast calls", forecast_calls, "alpha", alpha, "beta", beta, "maximizing_player")
                         return (score, m)
                     scores.append((score,m))
-                    #print("call forecast got scores", scores)
-                #print("--- returning max of", scores)
-                print("."*depth + "leaf", "forecast calls", forecast_calls, "alpha", alpha, "beta", beta, "maximizing_player", legal_moves)
                 return max(scores)
             else:
                 scores = []
                 forecast_calls = 0
                 for m in legal_moves:
-                    #print("call forecast", m, "depth", depth)
                     score = self.score(game.forecast_move(m), self)
                     forecast_calls += 1
                     if score <= alpha:
-                        #print("pruning alpha", alpha, "score", score, "after move", m)
-                        print("."*depth + "leaf", "forecast calls", forecast_calls, "alpha", alpha, "beta", beta, "minimizing_player")
                         return (score, m)
                     scores.append((score,m))
-                    #print("call forecast got scores", scores)
-                #print("--- returning min of", scores)
-                print("."*depth + "leaf", "forecast calls", forecast_calls, "alpha", alpha, "beta", beta, "minimizing_player", legal_moves)
                 return min(scores)
 
         # evaluate all branches and return the highest/lowest scoring tuple
@@ -451,22 +438,16 @@ class CustomPlayer:
         for m in legal_moves:
             if maximizing_player:
                 branch = game.forecast_move(m)
-                #print("will call forecast for", len(legal_moves), legal_moves, "depth", depth, "is maximizing_player", "alpha", alpha, "beta", beta)
-                print("."*depth + "branch", m, "alpha", alpha, "beta", beta, "maximizing_player")
                 score, _ = self.alphabeta(branch, depth-1, alpha, beta, not maximizing_player)
                 if score >= beta:
-                    # print("pruning maximizing_player score", score, "beta", beta)
                     return (score, m)
                 if score > alpha:
                     alpha = score
                 scores.append((score, m))
             else:
                 branch = game.forecast_move(m)
-                #print("will call forecast for", len(legal_moves), legal_moves, "depth", depth, "is minimizing_player", "alpha", alpha, "beta", beta)
-                print("."*depth + "branch", m, "alpha", alpha, "beta", beta, "minimizing_player")
                 score, _ = self.alphabeta(branch, depth-1, alpha, beta, not maximizing_player)
                 if score <= alpha:
-                    # print("pruning minimizing_player score", score, "alpha", alpha)
                     return (score, m)
                 if score < beta:
                     beta = score

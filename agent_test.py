@@ -452,10 +452,6 @@ class Project1Test(unittest.TestCase):
 
         for idx in range(len(counts)):
             test_depth = idx + 1  # pruning guarantee requires min depth of 3
-            print("-------------------")
-            print("----- test depth", test_depth)
-            print("-------------------")
-
             first_branch = []
             heuristic = makeBranchEval(first_branch)
             agentUT, board = self.initAUT(test_depth, heuristic,
@@ -467,9 +463,6 @@ class Project1Test(unittest.TestCase):
             # disable search timeout by returning a constant value
             agentUT.time_left = lambda: 1e3
             _, move = agentUT.alphabeta(board, test_depth)
-
-            print("bc", board.counts[0], "c", counts[idx][0], move)
-            print("bu", board.counts[1], "u", counts[idx][1])
 
             num_explored_valid = board.counts[0] == counts[idx][0]
             num_unique_valid = board.counts[1] == counts[idx][1]
