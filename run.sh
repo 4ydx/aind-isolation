@@ -14,3 +14,6 @@ python tournament.py > log/4.log 2>&1
 
 cp game_agent.py.5 game_agent.py
 python tournament.py > log/5.log 2>&1
+
+cp game_agent.py.6 game_agent.py
+python tournament.py > log/6.log 2>&1

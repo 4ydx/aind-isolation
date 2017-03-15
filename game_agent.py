@@ -159,9 +159,9 @@ def custom_score(game, player):
 
     """ 6 """
     """ favor moves that position the player closer to the center of the board until the game board is half full
-        if a set of moves can pinch an opponent, weight it heavily
+        if a set of moves can pinch an opponent, weigh it heavily
         otherwise, simply move with most available
-
+    """
     blanks = game.get_blank_spaces()
     if len(blanks) > game.width*game.height:
         centerAt = board_center(game)
@@ -182,7 +182,6 @@ def custom_score(game, player):
                     return float("+inf")
 
     return float(len(game.get_legal_moves(player))-len(game.get_legal_moves(game.get_opponent(player))))
-    """
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
