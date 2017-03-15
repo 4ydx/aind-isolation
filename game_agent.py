@@ -81,7 +81,7 @@ def custom_score(game, player):
     favored = float(0)
     playerMoves = game.get_legal_moves(player)
     opponentMoves = game.get_legal_moves(game.get_opponent(player))
-    if len(o) == 1:
+    if len(opponentMoves) == 1:
         for o in opponentMoves:
             for p in playerMoves:
                 if o == p:
