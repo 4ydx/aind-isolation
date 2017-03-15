@@ -56,13 +56,15 @@ def custom_score(game, player):
         return float("-inf")
 
     if game.is_winner(player):
-        return float("inf")
+        return float("+inf")
 
+    """ not available """
     """ favor moves where the player has more moves than the opponent
-    """
     return float(len(game.get_legal_moves(player))-len(game.get_legal_moves(game.get_opponent(player))))
+    """
 
-    """ favor moves where the player attempts to steal the opponents moves
+    """ 1 """
+    """ favor moves where the player encroaches on the opponents moves
     favored = float(0)
     playerMoves = game.get_legal_moves(player)
     opponentMoves = game.get_legal_moves(game.get_opponent(player))
@@ -75,8 +77,9 @@ def custom_score(game, player):
     return favored
     """
 
-    """ favor moves where the player attempts to steal the opponents final move 
-        otherwise follow the opponent around the board waiting to pounce
+    """ 2 """
+    """ favor moves where the player encroaches on the opponents final move 
+        otherwise follow the opponent around the board
     playerMoves = game.get_legal_moves(player)
     opponentMoves = game.get_legal_moves(game.get_opponent(player))
     if len(opponentMoves) == 1:
@@ -90,10 +93,14 @@ def custom_score(game, player):
 
     xDiff = playerAt[0] - opponentAt[0]
     yDiff = playerAt[1] - opponentAt[1]
-    return float(xDiff*xDiff + yDiff*yDiff)
+    denom = float(xDiff*xDiff + yDiff*yDiff)
+    if denom == 0:
+        return float("+inf")
+    return float(1.0/denom)
     """
 
-    """ favor moves where the player can steal the opponents final move 
+    """ 3 """
+    """ favor moves where the player encroaches on the opponents final move 
         moves that encroach on the other players moves are favored
         otherwise follow the opponent around the board waiting to pounce
     playerMoves = game.get_legal_moves(player)
@@ -118,25 +125,63 @@ def custom_score(game, player):
 
     xDiff = playerAt[0] - opponentAt[0]
     yDiff = playerAt[1] - opponentAt[1]
-    return float(xDiff*xDiff + yDiff*yDiff)
+    denom = float(xDiff*xDiff + yDiff*yDiff)
+    if denom == 0:
+        return float("+inf")
+    return float(1.0/denom)
     """
 
+    """ 4 """
     """ favor moves that position the player closer to the opponent
     playerAt = game.get_player_location(player)
     opponentAt = game.get_player_location(game.get_opponent(player))
 
     xDiff = playerAt[0] - opponentAt[0]
     yDiff = playerAt[1] - opponentAt[1]
-    return float(xDiff*xDiff + yDiff*yDiff)
+    denom = float(xDiff*xDiff + yDiff*yDiff)
+    if denom == 0:
+        return float("+inf")
+    return float(1.0/denom)
     """
 
+    """ 5 """
     """ favor moves that position the player closer to the center of the board
     centerAt = board_center(game)
     playerAt = game.get_player_location(player)
 
     xDiff = playerAt[0] - centerAt[0]
     yDiff = playerAt[1] - centerAt[1]
-    return float(xDiff*xDiff + yDiff*yDiff)
+    denom = float(xDiff*xDiff + yDiff*yDiff)
+    if denom == 0:
+        return float("+inf")
+    return float(1.0/denom)
+    """
+
+    """ 6 """
+    """ favor moves that position the player closer to the center of the board until the game board is half full
+        if a set of moves can pinch an opponent, weight it heavily
+        otherwise, simply move with most available
+
+    blanks = game.get_blank_spaces()
+    if len(blanks) > game.width*game.height:
+        centerAt = board_center(game)
+        playerAt = game.get_player_location(player)
+        xDiff = playerAt[0] - centerAt[0]
+        yDiff = playerAt[1] - centerAt[1]
+        denom = float(xDiff*xDiff + yDiff*yDiff)
+        if denom == 0:
+            return float("+inf")
+        return float(1.0/denom)
+
+    playerMoves = game.get_legal_moves(player)
+    opponentMoves = game.get_legal_moves(game.get_opponent(player))
+    if len(opponentMoves) == 1:
+        for o in opponentMoves:
+            for p in playerMoves:
+                if o == p:
+                    return float("+inf")
+
+    return float(len(game.get_legal_moves(player))-len(game.get_legal_moves(game.get_opponent(player))))
     """
 
 class CustomPlayer:
