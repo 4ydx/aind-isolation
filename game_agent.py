@@ -76,19 +76,22 @@ def custom_score(game, player):
     """
 
     """ favor moves where the player attempts to steal the opponents final move 
-        otherwise use the move with more moves than the opponent
+        otherwise follow the opponent
     """
-    favored = float(0)
     playerMoves = game.get_legal_moves(player)
     opponentMoves = game.get_legal_moves(game.get_opponent(player))
     if len(opponentMoves) == 1:
         for o in opponentMoves:
             for p in playerMoves:
                 if o == p:
-                    favored = float("+inf")
-    if favored == 0:
-        return float(len(playerMoves)-len(opponentMoves))
-    return favored
+                    return float("+inf")
+
+    playerAt = game.get_player_location(player)
+    opponentAt = game.get_player_location(game.get_opponent(player))
+
+    xDiff = playerAt[0] - opponentAt[0]
+    yDiff = playerAt[1] - opponentAt[1]
+    return float(xDiff*xDiff + yDiff*yDiff)
 
     """ favor moves that position the player closer to the opponent
     playerAt = game.get_player_location(player)
