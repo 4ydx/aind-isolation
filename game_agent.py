@@ -413,8 +413,7 @@ class CustomPlayer:
             if maximizing_player:
                 branch = game.forecast_move(m)
                 score, _ = self.alphabeta(branch, depth-1, alpha, beta, not maximizing_player)
-                #if score >= beta:
-                if score > beta:
+                if score >= beta:
                     return (score, m)
                 if score > alpha:
                     alpha = score
@@ -424,8 +423,7 @@ class CustomPlayer:
             else:
                 branch = game.forecast_move(m)
                 score, _ = self.alphabeta(branch, depth-1, alpha, beta, not maximizing_player)
-                #if score <= alpha:
-                if score < alpha:
+                if score <= alpha:
                     return (score, m)
                 if score < beta:
                     beta = score
