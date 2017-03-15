@@ -58,9 +58,9 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    """ favor moves where the player has more moves than the opponent """
+    """ favor moves where the player has more moves than the opponent
     return float(len(game.get_legal_moves(player))-len(game.get_legal_moves(game.get_opponent(player))))
-
+    """
 
     """ favor moves where the player attempts to steal the opponents moves
     favored = float(0)
@@ -74,6 +74,21 @@ def custom_score(game, player):
                 favored -= 1
     return favored
     """
+
+    """ favor moves where the player attempts to steal the opponents final move 
+        otherwise use the move with more moves than the opponent
+    """
+    favored = float(0)
+    playerMoves = game.get_legal_moves(player)
+    opponentMoves = game.get_legal_moves(game.get_opponent(player))
+    if len(o) == 1:
+        for o in opponentMoves:
+            for p in playerMoves:
+                if o == p:
+                    favored = float("+inf")
+    if favored == 0:
+        return float(len(playerMoves)-len(opponentMoves))
+    return favored
 
     """ favor moves that position the player closer to the opponent
     playerAt = game.get_player_location(player)
