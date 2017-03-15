@@ -1,0 +1,159 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+
+\title{Heuristic Analysis}
+\author{Nathan Findley}
+\date{March 2017}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\begin{abstract}
+
+Minimax alpha-beta pruning with iterative deepening requires a heuristic in
+order to determine which branches should be kept and which should be pruned.
+Six different strategies are explored with the hope that a heuristic that outperforms
+the ID Improved default heuristic can be found.
+
+\end{abstract}
+
+\section{Encroach The Opponent's Moves}
+
+Attempt to create a heuristic that encourages moves that could directly conflict with
+the opponents movement space.  This is, like several of the heuristics explored, is
+very simplistic and, ultimately, is not very effective.
+
+\begin{lstlisting}[language=Python]
+    favored = float(0)
+    playerMoves = game.get_legal_moves(player)
+    opponentMoves = game.get_legal_moves(game.get_opponent(player))
+    for o in opponentMoves:
+        for p in playerMoves:
+            if o == p:
+                favored += 1
+            else:
+                favored -= 1
+    return favored
+\end{lstlisting}
+
+\begin{verbatim}
+*************************
+ Evaluating: ID_Improved 
+*************************
+
+Playing Matches:
+----------
+  Match 1: ID_Improved vs   Random    	Result: 187 to 13
+  Match 2: ID_Improved vs   MM_Null   	Result: 169 to 31
+  Match 3: ID_Improved vs   MM_Open   	Result: 158 to 42
+  Match 4: ID_Improved vs MM_Improved 	Result: 144 to 56
+  Match 5: ID_Improved vs   AB_Null   	Result: 148 to 52
+  Match 6: ID_Improved vs   AB_Open   	Result: 139 to 61
+  Match 7: ID_Improved vs AB_Improved 	Result: 125 to 75
+
+
+Results:
+----------
+ID_Improved         76.43%
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 185 to 15
+  Match 2:   Student   vs   MM_Null   	Result: 174 to 26
+  Match 3:   Student   vs   MM_Open   	Result: 140 to 60
+  Match 4:   Student   vs MM_Improved 	Result: 136 to 64
+  Match 5:   Student   vs   AB_Null   	Result: 157 to 43
+  Match 6:   Student   vs   AB_Open   	Result: 124 to 76
+  Match 7:   Student   vs AB_Improved 	Result: 111 to 89
+
+
+Results:
+----------
+Student             73.36%
+\end{verbatim}
+
+This doesn't appear to be significantly different from the base ID Improved heuristic 
+of favoring moves that provide more moves than the opponent.
+
+\section{Primarily Follow The Opponent}
+
+Favor moves where the player encroaches on the opponents final move and otherwise
+follow the opponent around the board.
+
+\begin{lstlisting}[language=Python]
+    playerMoves = game.get_legal_moves(player)
+    opponentMoves = game.get_legal_moves(game.get_opponent(player))
+    if len(opponentMoves) == 1:
+        for o in opponentMoves:
+            for p in playerMoves:
+                if o == p:
+                    return float("+inf")
+
+    playerAt = game.get_player_location(player)
+    opponentAt = game.get_player_location(game.get_opponent(player))
+
+    xDiff = playerAt[0] - opponentAt[0]
+    yDiff = playerAt[1] - opponentAt[1]
+    denom = float(xDiff*xDiff + yDiff*yDiff)
+    if denom == 0:
+        return float("+inf")
+    return float(1.0/denom)
+\end{lstlisting}
+
+\begin{verbatim}
+*************************
+ Evaluating: ID_Improved 
+*************************
+
+Playing Matches:
+----------
+  Match 1: ID_Improved vs   Random    	Result: 186 to 14
+  Match 2: ID_Improved vs   MM_Null   	Result: 172 to 28
+  Match 3: ID_Improved vs   MM_Open   	Result: 148 to 52
+  Match 4: ID_Improved vs MM_Improved 	Result: 156 to 44
+  Match 5: ID_Improved vs   AB_Null   	Result: 156 to 44
+  Match 6: ID_Improved vs   AB_Open   	Result: 131 to 69
+  Match 7: ID_Improved vs AB_Improved 	Result: 137 to 63
+
+
+Results:
+----------
+ID_Improved         77.57%
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 191 to 9
+  Match 2:   Student   vs   MM_Null   	Result: 172 to 28
+  Match 3:   Student   vs   MM_Open   	Result: 149 to 51
+  Match 4:   Student   vs MM_Improved 	Result: 133 to 67
+  Match 5:   Student   vs   AB_Null   	Result: 160 to 40
+  Match 6:   Student   vs   AB_Open   	Result: 129 to 71
+  Match 7:   Student   vs AB_Improved 	Result: 119 to 81
+
+
+Results:
+----------
+Student             75.21%
+\end{verbatim}
+
+This strategy appears to be roughly equivalent to the default ID Improved heuristic.
+
+\section{Results}
+
+Keeping a close proximity to the opponent appears to be at least a break even strategy.
+Given that it shows the best possible score among all heuristics I created, that is what I am going with.
+I am a bit embarassed to say that I ultimately felt like I was randomly tossing attempted strategies into
+a dark, bottomless pit: I am not familiar enough with this game to have an intuition for good strategies it seems.
+
+\end{document}

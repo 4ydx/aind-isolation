@@ -103,6 +103,7 @@ def custom_score(game, player):
     """ favor moves where the player encroaches on the opponents final move 
         moves that encroach on the other players moves are favored
         otherwise follow the opponent around the board waiting to pounce
+    """
     playerMoves = game.get_legal_moves(player)
     opponentMoves = game.get_legal_moves(game.get_opponent(player))
     if len(opponentMoves) == 1:
@@ -129,7 +130,6 @@ def custom_score(game, player):
     if denom == 0:
         return float("+inf")
     return float(1.0/denom)
-    """
 
     """ 4 """
     """ favor moves that position the player closer to the opponent
@@ -159,9 +159,9 @@ def custom_score(game, player):
 
     """ 6 """
     """ favor moves that position the player closer to the center of the board until the game board is half full
-        if a set of moves can pinch an opponent, weigh it heavily
+        if a set of moves can pinch an opponent, weight it heavily
         otherwise, simply move with most available
-    """
+
     blanks = game.get_blank_spaces()
     if len(blanks) > game.width*game.height:
         centerAt = board_center(game)
@@ -182,6 +182,7 @@ def custom_score(game, player):
                     return float("+inf")
 
     return float(len(game.get_legal_moves(player))-len(game.get_legal_moves(game.get_opponent(player))))
+    """
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
