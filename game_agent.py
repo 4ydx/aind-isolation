@@ -158,7 +158,7 @@ def custom_score(game, player):
     """
 
     """ 6 """
-    """ favor moves that position the player closer to the center of the board until the game board >= %60 empty
+    """ favor moves that position the player closer to the center of the board until the game board is %40 full 
         if a set of moves can pinch an opponent, weight it heavily
         otherwise, simply move with most available
     """
