@@ -15,14 +15,14 @@
 
 Minimax alpha-beta pruning with iterative deepening uses a heuristic in
 order to determine which branches should be kept and which should be pruned.
-four different strategies are explored with the hope that a heuristic that outperforms
+Four different strategies are explored with the hope that a heuristic that outperforms
 the ID Improved default heuristic can be found.
 
 \end{abstract}
 
 \section{Primarily Follow The Opponent}
 
-Favor moves where the player encroaches on the opponents final move. Otherwise,
+Favor moves where the player encroaches on the opponent's final move. Otherwise,
 follow the opponent around the board.
 
 \begin{lstlisting}[language=Python]
@@ -247,7 +247,8 @@ Otherwise, simply move as ID Improved would giving heavy weight on a set of move
                 if o == p:
                     return float("+inf")
 
-    return float(len(game.get_legal_moves(player))-len(game.get_legal_moves(game.get_opponent(player))))
+    return float(len(game.get_legal_moves(player))-
+			len(game.get_legal_moves(game.get_opponent(player))))
 \end{lstlisting}
 
 \begin{verbatim}
@@ -302,7 +303,7 @@ By initially remaining near the center of the board, it seems
 that this should allow for more available moves, permitting more possibility for finding a winning branch.
 I like the idea of coming up with strategies that highly favor being able to see "horizon" results 
 before they happen, unfortunately I am not sure how to do that in an isolation scenario with chess-like knight movement.
-As such, highly favoring a single move that includes the possibility of taking the opponents final move
+As such, highly favoring a single move that includes the possibility of taking the opponent's final move
 is where my strategy stopped in that regard.  Naturally, given that the original ID Improved heuristic
 was difficult for me to overcome, incorporating it into a more detailed strategy felt like a good approach.
 
