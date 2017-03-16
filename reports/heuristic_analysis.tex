@@ -248,4 +248,71 @@ is where my strategy stopped.  Following the opponent is an attempt at making th
 though I have to admit that I am simply working off of a gut feeling rather than any real reason
 to believe that being close to the opponent will actually create such an opportunity.
 
+\section{Beyond Project Scope - Breaking Changes}
+
+The following results were obtained by changing the way that the iterative deepening
+evaluates layers above depth == 1.  If one makes the changes below so that greater than and
+less than comparisions become strictly greater or strictly less than, the search space is
+expanded but the win percentages increase.  Doing this will result in the agent test.py
+failing so I have not included it in my final result, but this was an interesting accidental
+discovery.  This version seems far superior.  Both agents ran with the default ID Improved heuristic.
+
+\begin{lstlisting}[language=Python]
+# evaluate all branches and return the highest/lowest scoring tuple
+for m in legal_moves:
+	if current_move == (-1, -1):
+		current_move = m
+
+	if maximizing_player:
+		...
+		# CHANGED if score >= beta:
+		if score > beta:
+		...
+	else:	
+		...
+		# CHANGED if score <= alpha:
+		if score < alpha:
+		...
+\end{lstlisting}
+
+\begin{verbatim}
+*************************
+ Evaluating: ID_Improved 
+*************************
+
+Playing Matches:
+----------
+  Match 1: ID_Improved vs   Random    	Result: 184 to 16
+  Match 2: ID_Improved vs   MM_Null   	Result: 174 to 26
+  Match 3: ID_Improved vs   MM_Open   	Result: 158 to 42
+  Match 4: ID_Improved vs MM_Improved 	Result: 142 to 58
+  Match 5: ID_Improved vs   AB_Null   	Result: 162 to 38
+  Match 6: ID_Improved vs   AB_Open   	Result: 146 to 54
+  Match 7: ID_Improved vs AB_Improved 	Result: 140 to 60
+
+
+Results:
+----------
+ID_Improved         79.00%
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 185 to 15
+  Match 2:   Student   vs   MM_Null   	Result: 178 to 22
+  Match 3:   Student   vs   MM_Open   	Result: 159 to 41
+  Match 4:   Student   vs MM_Improved 	Result: 139 to 61
+  Match 5:   Student   vs   AB_Null   	Result: 157 to 43
+  Match 6:   Student   vs   AB_Open   	Result: 138 to 62
+  Match 7:   Student   vs AB_Improved 	Result: 128 to 72
+
+
+Results:
+----------
+Student             77.43%
+\end{verbatim}
+
 \end{document}
