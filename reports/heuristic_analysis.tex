@@ -222,31 +222,89 @@ Student             72.71%
 This ends up being the most disappointing set of results.  This is clearly not
 a winning strategy.
 
-\section{}
+\section{Central Hover Followed By Most Moves}
+
+Favor moves that position the player closer to the center of the board until the game board is 40\% full.
+Otherwise, simply move as ID Improved would giving heavy weight on a set of moves that can pinch an opponent.
 
 \begin{lstlisting}[language=Python]
+    blanks = game.get_blank_spaces()
+    if len(blanks) > (3*game.width*game.height/5):
+        centerAt = board_center(game)
+        playerAt = game.get_player_location(player)
+        xDiff = playerAt[0] - centerAt[0]
+        yDiff = playerAt[1] - centerAt[1]
+        denom = float(xDiff*xDiff + yDiff*yDiff)
+        if denom == 0:
+            return float("+inf")
+        return float(1.0/denom)
+
+    playerMoves = game.get_legal_moves(player)
+    opponentMoves = game.get_legal_moves(game.get_opponent(player))
+    if len(opponentMoves) == 1:
+        for o in opponentMoves:
+            for p in playerMoves:
+                if o == p:
+                    return float("+inf")
+
+    return float(len(game.get_legal_moves(player))-len(game.get_legal_moves(game.get_opponent(player))))
 \end{lstlisting}
 
 \begin{verbatim}
+*************************
+ Evaluating: ID_Improved 
+*************************
+
+Playing Matches:
+----------
+  Match 1: ID_Improved vs   Random    	Result: 180 to 20
+  Match 2: ID_Improved vs   MM_Null   	Result: 175 to 25
+  Match 3: ID_Improved vs   MM_Open   	Result: 155 to 45
+  Match 4: ID_Improved vs MM_Improved 	Result: 148 to 52
+  Match 5: ID_Improved vs   AB_Null   	Result: 164 to 36
+  Match 6: ID_Improved vs   AB_Open   	Result: 134 to 66
+  Match 7: ID_Improved vs AB_Improved 	Result: 126 to 74
+
+
+Results:
+----------
+ID_Improved         77.29%
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 189 to 11
+  Match 2:   Student   vs   MM_Null   	Result: 177 to 23
+  Match 3:   Student   vs   MM_Open   	Result: 159 to 41
+  Match 4:   Student   vs MM_Improved 	Result: 149 to 51
+  Match 5:   Student   vs   AB_Null   	Result: 162 to 38
+  Match 6:   Student   vs   AB_Open   	Result: 136 to 64
+  Match 7:   Student   vs AB_Improved 	Result: 133 to 67
+
+
+Results:
+----------
+Student             78.93%
 \end{verbatim}
+
+This is the first time one of my heuristics has outperformed ID Improved.  Considering that this
+is a variation of ID Improved's heuristic, perhaps I shouldn't be surprised that it is highly competitive.
 
 \section{Results}
 
 The ID Improved heuristic consistently achieves scores from 75-78\% based on testing.
-The four heuristics presented are not nearly good enough to overcome this range unfortunately.
-It has been made crystal clear to me that I am not approaching this problem from the proper
-perspective.  All of my attempts are, possibly, too simplistic in their approach due to not
-taking enough time to think about patterns that might present themselves when dealing with
-this particular version of isolation.
 
-Among all four contenders, "Primarily Follow The Opponent" is the best option.  The primary
-reason is that it appears to be the highest scoring heuristic.  I like the idea of coming up
-with strategies that highly favor being able to see "horizon" results before they happen, unfortunately
-I am not sure how to do that in an isolation scenario with chess-like knight movement.  As such
-highly favoring a single move that includes the possibility of taking the opponents final move
-is where my strategy stopped.  Following the opponent is an attempt at making this more likely
-though I have to admit that I am simply working off of a gut feeling rather than any real reason
-to believe that being close to the opponent will actually create such an opportunity.
+Among all four contenders, "Central Hover Followed by Most Moves" appears to be the best option.
+By initially remaining near the center of the board, it seems
+that this should allow for more available moves, permitting more possibility for finding a winning branch.
+I like the idea of coming up with strategies that highly favor being able to see "horizon" results 
+before they happen, unfortunately I am not sure how to do that in an isolation scenario with chess-like knight movement.
+As such, highly favoring a single move that includes the possibility of taking the opponents final move
+is where my strategy stopped in that regard.  Naturally given that the original ID Improved heuristic
+was difficult for me to overcome, incorporating it into a more detailed strategy felt like a good approach.
 
 \section{Beyond Project Scope - Breaking Changes}
 
