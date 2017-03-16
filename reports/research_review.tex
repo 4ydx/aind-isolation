@@ -14,21 +14,21 @@
 A new game tree search technique called Min / Max Approximation was introduced
 by Ronald L. Rivest in 1986.  An iterative approach, it is used to determine
 which leaf should be futher expanded so that the root will have a value that
-approaches the true values of a fully expanded tree.  When evalutated in 
+approaches the true values of a fully expanded tree.  When evaluated in 
 comparison with minmax alpha-beta pruning
 using iterative deepening over the course of nearly 1,000 trials, Min / Max
 approximation was seen to be either a strong contender when limiting turns by move count 
-or slightly weaker contender when limiting turns by time.
+or a slightly weaker contender when limiting turns by time.
 
 \end{abstract}
 
-\textbf{Problem} 
+\section{Problem} 
 
 When designing an algorithm to handle all possible branches of all possible
-plays within any given game, the immediate limiting factor is time: a perfect
+plays within any given game, the immediate limiting factors are time and computation: a perfect
 view of the entire tree of gameplay for a particular game is not feasible.
 
-\textbf{Goal} 
+\section{Goal} 
 
 Min / Max Approximation is attempting to solve this problem.  Unlike minimax
 alpha-beta pruning with iterative deepening which moves down the tree with a uniform depth, 
@@ -36,8 +36,8 @@ Min / Max approximation follows a
 given branch in a tree because it appears to be beneficial.  As a result, different
 levels of depth are reached in different branches of the partial tree.  Essentially one branch is explored
 until the root node's value is considered better when exploring a different tip.
-At that point in time search switches to the seemingly more valuable tip.  
-Time permitting the depth of the most valuable branch will reach a terminating leaf.  As to which tip should 
+At that point in time, search switches to the seemingly more valuable tip.  
+Time permitting, the depth of the most valuable branch will reach a terminating leaf.  As to which tip should 
 be explored, Min / Max approximation is presented as a possible answer.
 
 Penalties are introduced in order to determine which tip to pursue.  "Bad" tips of the tree
@@ -51,13 +51,14 @@ strengths is to encourage branches that have secondary lines of play that might 
 winnable since the penalty calculation is determined cumulatively rather than
 just using a child with the highest value.
 
-\textbf{Results} 
+\section{Results} 
 
 Connect four was used to explore whether or not this is a viable algorithm in comparison
 with minimax alpha-beta pruning.  After nearly 1000 trials, the author felt confident
 that this method could be further explored and may possibly be incorporated with existing
 techinques at the time. Overall Min / Max Approximation appears more effective than traditional 
 minimax alpha-beta pruning with iterative deepening as long as the number of moves 
-is the limiting resource when comparing the two methods.
+is the limiting resource when comparing the two methods.  Unfortunately game rounds are typically
+constrained by time, preventing this method from immediately being the best option available.
 
 \end{document}
