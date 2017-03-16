@@ -89,9 +89,8 @@ This strategy appears to be roughly equivalent to the default ID Improved heuris
 
 \section{Consume The Opponent's Movement Space}
 
-Favor moves where the player encroaches on the opponents final move as well as 
-moves that encroach on the other players general moves
-otherwise follow the opponent around the board.
+Favor moves where the player encroaches on the opponent's moves or follow them around
+the board. Also uses the idea of trying to stop an opponent that suddenly has limited movement.
 
 \begin{lstlisting}[language=Python]
     playerMoves = game.get_legal_moves(player)
@@ -234,5 +233,19 @@ a winning strategy.
 \section{Results}
 
 The ID Improved heuristic consistently achieves scores from 75-78\% based on testing.
+The four heuristics presented are not nearly good enough to overcome this range unfortunately.
+It has been made crystal clear to me that I am not approaching this problem from the proper
+perspective.  All of my attempts are, possibly, too simplistic in their approach due to not
+taking enough time to think about patterns that might present themselves when dealing with
+this particular version of isolation.
+
+Among all four contenders, "Primarily Follow The Opponent" is the best option.  The primary
+reason is that it appears to be the highest scoring heuristic.  I like the idea of coming up
+with strategies that highly favor being able to see "horizon" results before they happen, unfortunately
+I am not sure how to do that in an isolation scenario with chess-like knight movement.  As such
+highly favoring a single move that includes the possibility of taking the opponents final move
+is where my strategy stopped.  Following the opponent is an attempt at making this more likely
+though I have to admit that I am simply working off of a gut feeling rather than any real reason
+to believe that being close to the opponent will actually create such an opportunity.
 
 \end{document}
