@@ -303,17 +303,18 @@ that this should allow for more available moves, permitting more possibility for
 I like the idea of coming up with strategies that highly favor being able to see "horizon" results 
 before they happen, unfortunately I am not sure how to do that in an isolation scenario with chess-like knight movement.
 As such, highly favoring a single move that includes the possibility of taking the opponents final move
-is where my strategy stopped in that regard.  Naturally given that the original ID Improved heuristic
+is where my strategy stopped in that regard.  Naturally, given that the original ID Improved heuristic
 was difficult for me to overcome, incorporating it into a more detailed strategy felt like a good approach.
 
 \section{Beyond Project Scope - Breaking Changes}
 
 The following results were obtained by changing the way that the iterative deepening
 evaluates layers above depth == 1.  If one makes the changes below so that greater than and
-less than comparisions become strictly greater or strictly less than, the search space is
-expanded but the win percentages increase.  Doing this will result in the agent test.py
+less than comparisons become strictly greater or strictly less than, the search space is
+expanded but the win percentages increase.  Doing this will result in the agent\_test.py
 failing so I have not included it in my final result, but this was an interesting accidental
-discovery.  This version seems far superior.  Both agents ran with the default ID Improved heuristic.
+discovery.  This version seems superior particularly since it gives one of the highest win percentages
+that any of my testing has yet seen.  Both agents ran with the default ID Improved heuristic.
 
 \begin{lstlisting}[language=Python]
 # evaluate all branches and return the highest/lowest scoring tuple
