@@ -11,52 +11,53 @@
 
 \begin{abstract}
 
-A new game tree search technique called Min / Max Approximation is introduced
+A new game tree search technique called Min / Max Approximation was introduced
 by Ronald L. Rivest in 1986.  An iterative approach, it is used to determine
 which leaf should be futher expanded so that the root will have a value that
 approaches the true values of a fully expanded tree.  When evalutated in 
 comparison with minmax alpha-beta pruning
 using iterative deepening over the course of nearly 1,000 trials, Min / Max
-approximation can be seen to be either a strong or slightly weaker contender 
-depending on what kind of resource is limited when evaluating the tree.
+approximation was seen to be either a strong contender when limiting turns by move count 
+or slightly weaker contender when limiting turns by time.
 
 \end{abstract}
 
-\textbf{Goals} 
+\textbf{Problem} 
 
 When designing an algorithm to handle all possible branches of all possible
 plays within any given game, the immediate limiting factor is time: a perfect
 view of the entire tree of gameplay for a particular game is not feasible.
 
+\textbf{Goal} 
+
 Min / Max Approximation is attempting to solve this problem.  Unlike minimax
-alpha-beta pruning with iterative deepening, Min / Max approximation follows a
-given branch in a tree because it appears to be beneficial.  As such different
-levels of depth are reached in different trees of gameplay.  Effectively all
-tips of the tree are evaluated while time permits.  If a tip's value in
-combination with all of its parent values still makes it the most interesting
-line of play, that particular tip is continuously explored. As to which tip should 
+alpha-beta pruning with iterative deepening which moves down the tree with a uniform depth, 
+Min / Max approximation follows a
+given branch in a tree because it appears to be beneficial.  As a result, different
+levels of depth are reached in different branches of the partial tree.  Essentially one branch is explored
+until the root node's value is considered better when exploring a different tip.
+At that point in time search switches to the seemingly more valuable tip.  
+Time permitting the depth of the most valuable branch will reach a terminating leaf.  As to which tip should 
 be explored, Min / Max approximation is presented as a possible answer.
 
-Penalties are introduced in order to determine which tip to pursue. This
-penalization incorporates depth as well as the approximated value of worthiness
-of a particular branch.  Ultimately the overall penalty for a given tip is the
-sum of all penalties tracing up to the original root move.   This calculation of
-a tip is what distinguishes this algorithm from minimax alpha-beta: the tip that
-has the least penalty is the one that is further explored. As soon as a tip's
+Penalties are introduced in order to determine which tip to pursue.  "Bad" tips of the tree
+are weighted with a nonnegative penalty that distinguishes them from "good" tips.
+The overall penalty for a given tip is the sum of all penalties tracing up to the original root of the partial tree.
+This calculation of a viable tip is what distinguishes this algorithm from minimax alpha-beta: the tip that causes
+the root the have the lowest penalty is the one that is further explored. As soon as a tip's
 weight drops its penalty score below any other tip in the partially expanded
-tree, that more favorable tip is then explored. One of Min / Max approximations 
-strengths is to 
-encourage branches that have secondary lines of play that might also be
+tree, that more favorable tip is then explored. According to the author, one of Min / Max approximations 
+strengths is to encourage branches that have secondary lines of play that might also be
 winnable since the penalty calculation is determined cumulatively rather than
 just using a child with the highest value.
 
-Connect four was used to explore whether or not this is a viable algorithm.
+\textbf{Results} 
 
-Overall Min / Max Approximation appears more effective than traditional 
+Connect four was used to explore whether or not this is a viable algorithm in comparison
+with minimax alpha-beta pruning.  After nearly 1000 trials, the author felt confident
+that this method could be further explored and may possibly be incorporated with existing
+techinques at the time. Overall Min / Max Approximation appears more effective than traditional 
 minimax alpha-beta pruning with iterative deepening as long as the number of moves 
-is the limiting resource when comparing the two methods.  According to the original 
-publication it remains to be seen if this method can be incorporated into other 
-methods in order to produce more efficient algorithms as well as to explore possibilities in
-parallelization.
+is the limiting resource when comparing the two methods.
 
 \end{document}

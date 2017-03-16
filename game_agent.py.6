@@ -158,12 +158,12 @@ def custom_score(game, player):
     """
 
     """ 6 """
-    """ favor moves that position the player closer to the center of the board until the game board is half full
+    """ favor moves that position the player closer to the center of the board until the game board >= %60 empty
         if a set of moves can pinch an opponent, weight it heavily
         otherwise, simply move with most available
     """
     blanks = game.get_blank_spaces()
-    if len(blanks) > game.width*game.height:
+    if len(blanks) > (3*game.width*game.height/5):
         centerAt = board_center(game)
         playerAt = game.get_player_location(player)
         xDiff = playerAt[0] - centerAt[0]
